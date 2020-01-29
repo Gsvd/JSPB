@@ -1,0 +1,53 @@
+#nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#nav ul li {
+    float: left;
+}
+
+#nav ul li a {
+    display: block;
+    padding: 15px 15px;
+    text-align: center;
+    text-decoration: none;
+}
+
+#nav ul li a:hover {
+    background: #D1D1D1;
+}
+
+#content .article {
+    margin-bottom: 25px;
+}
+
+#content .article .title {
+    margin-bottom: 10px;
+}
+
+#content .article .title h2 {
+    font-size: 24px;
+}
+
+#content .article .content {
+    margin-bottom: 10px;
+}
+
+#content .article .author {
+    font-style: italic;
+}
+
+#footer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.input-error {
+    border: 1px red solid;
+}
+
+.error {
+    color: red;
+}
