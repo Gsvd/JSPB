@@ -25,7 +25,7 @@ class Utilities extends Database
             ':id' => $id
         ));
     }
-    
+
     public static function addArticle($title, $content, $author) {
         $now = new DateTime();
         $db = new Database();
@@ -38,6 +38,55 @@ class Utilities extends Database
             ':author' => $author,
             ':created' => $now->format("Y-m-d H:i:s")
         ));
+    }
+
+    public static function addUser($username, $email, $password) {
+        $now = new DateTime();
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "INSERT INTO users(username, password, email, created) VALUES(:username, :password, :email, :created)";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            ':username' => $username,
+            ':password' => $password,
+            ':email' => $email,
+            ':created' => $now->format("Y-m-d H:i:s")
+        ));
+    }
+
+    public static function isLogged() {
+        return isset($_SESSION["username"]);
+    }
+
+    public static function requireAuth($state) {
+        if(Utilities::isLogged() && !$state || !Utilities::isLogged() && $state) {
+            header('Location: /errors/403.php');
+        }
+    }
+
+    public static function login($email, $password) {
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            ':email' => $email
+        ));
+        $user = $sth->fetch();
+        if (password_verify($password, $user['password'])) {
+            session_start();
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['email'] = $user['email'];
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static function logout() {
+        session_start();
+        session_destroy();
+        header('Location: /index.php');
     }
 
 }

@@ -3,8 +3,7 @@
 require_once("config.php");
 require_once("app/Utilities.php");
 
-require_once(__ROOT__ . "/templates/header.php");
-require_once (__ROOT__ . "/templates/nav.php");
+Utilities::requireAuth(true);
 
 $errors = array();
 
@@ -24,6 +23,9 @@ if (isset($_POST["article_submit"])) {
         Utilities::addArticle($title, $content, $author);
     }
 }
+
+require_once(__ROOT__ . "/templates/header.php");
+require_once (__ROOT__ . "/templates/nav.php");
 
 ?>
 

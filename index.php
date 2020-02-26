@@ -4,7 +4,7 @@ require_once("config.php");
 require_once("app/Utilities.php");
 
 require_once(__ROOT__ . "/templates/header.php");
-require_once (__ROOT__ . "/templates/nav.php");
+require_once(__ROOT__ . "/templates/nav.php");
 
 if (isset($_POST["article_delete"])) {
     Utilities::deleteArticle($_POST["article_id"]);
@@ -16,8 +16,17 @@ $articles = Utilities::getArticles();
 
 <div id="content" class="container">
     <?php
-    foreach ($articles as $article) {
+    if (!Utilities::isLogged()) {
     ?>
+        <div class="row">
+            <div class="twelve columns text-center">
+                You must be logged in to read articles!
+            </div>
+        </div>
+    <?php
+    } else {
+        foreach ($articles as $article) {
+        ?>
         <form action="" method="post">
             <div class="row">
                 <div class="article">
@@ -46,8 +55,9 @@ $articles = Utilities::getArticles();
             </div>
         </form>
     <?php
+        }
     }
     ?>
 </div>
 
-<?php require_once(__ROOT__ . "/templates/footer.php"); ?>
+<?php require_once (__ROOT__ . "/templates/footer.php"); ?>
