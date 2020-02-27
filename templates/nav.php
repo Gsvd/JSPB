@@ -6,8 +6,8 @@
         if (isset($_SESSION["username"])) {
         ?>
             <li><a href="/write.php">Write</a></li>
+            <li><a href="/profile.php"><?= $_SESSION["username"] ?></a></li>
             <li><a href="/logout.php">Logout</a></li>
-            <li><a href="#"><?= $_SESSION["username"] ?></a></li>
         <?php
         } else {
         ?>

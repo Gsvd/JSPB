@@ -52,6 +52,33 @@
     color: red;
 }
 
+.success {
+    color: green;
+}
+
 .text-center {
     text-align: center;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.form-profile {
+    margin-top: 15px;
+}
+
+.registered {
+    font-size: 12px;
+    font-style: italic;
+}
+
+.input-disabled {
+    cursor: not-allowed !important;
+    background-color: #f5f5f5 !important;
+}
+
+.separator {
+    border-top: 1px black solid;
+    margin: 10px 0 25px 0;
 }

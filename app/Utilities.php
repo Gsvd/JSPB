@@ -54,6 +54,41 @@ class Utilities extends Database
         ));
     }
 
+    public static function updateUsername($id, $username) {
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "UPDATE users SET username = :username WHERE id = :id";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            ':username' => $username,
+            ':id' => $id
+        ));
+    }
+
+    public static function updatePassword($id, $password) {
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "UPDATE users SET password = :password WHERE id = :id";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            ':password' => $password,
+            ':id' => $id
+        ));
+    }
+
+    public static function getLoggedUser() {
+        session_start();
+        $email = $_SESSION["email"];
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            'email' => $email
+        ));
+        return $sth->fetch();
+    }
+
     public static function isLogged() {
         return isset($_SESSION["username"]);
     }

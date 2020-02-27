@@ -20,7 +20,7 @@ if (isset($_POST["user_submit"])) {
         array_push($errors, array("password" => "Password cannot be empty!"));
     } if (!isset($password_verification) || strlen($password_verification) <= 0) {
         array_push($errors, array("password_verification" => "Password verification cannot be empty!"));
-    } if (isset($password) && isset($password_verification) && $password != $password_verification) {
+    } if (isset($password) && isset($password_verification) && strlen($password) <= 0 && strlen($password_verification) <= 0 && $password != $password_verification) {
         array_push($errors, array("passwords_match" => "Passwords does not match!"));
     }
 
