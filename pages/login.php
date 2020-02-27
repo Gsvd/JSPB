@@ -1,9 +1,8 @@
 <?php
 
-require_once("config.php");
-require_once("app/Utilities.php");
-
 Utilities::requireAuth(false);
+
+$email = null;
 
 $errors = array();
 
@@ -21,13 +20,10 @@ if (isset($_POST["login_submit"])) {
         if (!Utilities::login($email, $password)) {
             array_push($errors, array("no_account" => "User or password incorrect!"));
         } else {
-            header('Location: /index.php');
+            header('Location: /');
         }
     }
 }
-
-require_once(__ROOT__ . "/templates/header.php");
-require_once (__ROOT__ . "/templates/nav.php");
 
 ?>
 
@@ -69,5 +65,3 @@ require_once (__ROOT__ . "/templates/nav.php");
         </div>
     </div>
 </div>
-
-<?php require_once(__ROOT__ . "/templates/footer.php"); ?>

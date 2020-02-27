@@ -1,0 +1,3 @@
+<?php
+
+Utilities::logout();

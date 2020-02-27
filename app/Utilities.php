@@ -12,8 +12,7 @@ class Utilities extends Database
         $sql = "SELECT * FROM articles ORDER BY id DESC";
         $sth = $dbh->prepare($sql);
         $sth->execute();
-        $articles = $sth->fetchAll();
-        return $articles;
+        return $sth->fetchAll();
     }
 
     public static function deleteArticle($id) {
@@ -63,6 +62,7 @@ class Utilities extends Database
             ':username' => $username,
             ':id' => $id
         ));
+        $_SESSION['username'] = $username;
     }
 
     public static function updatePassword($id, $password) {
@@ -77,7 +77,6 @@ class Utilities extends Database
     }
 
     public static function getLoggedUser() {
-        session_start();
         $email = $_SESSION["email"];
         $db = new Database();
         $dbh = $db->connect();
@@ -95,7 +94,7 @@ class Utilities extends Database
 
     public static function requireAuth($state) {
         if(Utilities::isLogged() && !$state || !Utilities::isLogged() && $state) {
-            header('Location: /errors/403.php');
+            header('Location: /error/403');
         }
     }
 
@@ -109,7 +108,6 @@ class Utilities extends Database
         ));
         $user = $sth->fetch();
         if (password_verify($password, $user['password'])) {
-            session_start();
             $_SESSION['username'] = $user['username'];
             $_SESSION['email'] = $user['email'];
             return true;
@@ -121,7 +119,7 @@ class Utilities extends Database
     public static function logout() {
         session_start();
         session_destroy();
-        header('Location: /index.php');
+        header('Location: /');
     }
 
 }

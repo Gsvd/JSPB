@@ -1,31 +1,27 @@
 <?php
 
-require_once("config.php");
-require_once("app/Utilities.php");
-
 Utilities::requireAuth(true);
 
+$title = null;
+$content = null;
+
 $errors = array();
+$success = array();
 
 if (isset($_POST["article_submit"])) {
     $title = $_POST["article_title"];
     $content = $_POST["article_content"];
-    $author = $_POST["article_author"];
     if (!isset($title) || strlen($title) <= 0) {
         array_push($errors, array("title" => "Title cannot be empty!"));
     } if (!isset($content) || strlen($content) <= 0) {
         array_push($errors, array("content" => "Content cannot be empty!"));
-    } if (!isset($author) || strlen($author) <= 0) {
-        array_push($errors, array("author" => "Author cannot be empty!"));
     }
 
     if (count($errors) <= 0) {
-        Utilities::addArticle($title, $content, $author);
+        Utilities::addArticle($title, $content, $_SESSION["username"]);
+        array_push($success, array("article" => "Article successfully added!"));
     }
 }
-
-require_once(__ROOT__ . "/templates/header.php");
-require_once (__ROOT__ . "/templates/nav.php");
 
 ?>
 
@@ -33,7 +29,7 @@ require_once (__ROOT__ . "/templates/nav.php");
     <form action="" method="post">
         <div class="row">
             <div class="twelve columns">
-                <input class="u-full-width" type="text" name="article_title" placeholder="Just some title" value="<?= $title ?>">
+                <input class="u-full-width" type="text" name="article_title" placeholder="Lorem ipsum dolor sit amet" value="<?= $title ?>">
             </div>
         </div>
         <div class="row">
@@ -46,10 +42,7 @@ require_once (__ROOT__ . "/templates/nav.php");
             </div>
         </div>
         <div class="row">
-            <div class="six columns">
-                <input class="u-full-width" type="text" name="article_author" placeholder="Xx_Sram_xX" value="<?= $author ?>">
-            </div>
-            <div class="six columns">
+            <div class="offset-by-three six columns">
                 <input class="u-full-width" type="submit" value="Submit" name="article_submit">
             </div>
         </div>
@@ -65,10 +58,17 @@ require_once (__ROOT__ . "/templates/nav.php");
                         }
                         ?>
                     </div>
+                    <div>
+                        <?php
+                        foreach ($success as $message) {
+                            ?>
+                            <li class="success"><?= array_values($message)[0] ?></li>
+                            <?php
+                        }
+                        ?>
+                    </div>
                 </ul>
             </div>
         </div>
     </form>
 </div>
-
-<?php require_once(__ROOT__ . "/templates/footer.php"); ?>

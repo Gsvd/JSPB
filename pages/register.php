@@ -5,6 +5,9 @@ require_once("app/Utilities.php");
 
 Utilities::requireAuth(false);
 
+$username = null;
+$email = null;
+
 $errors = array();
 
 if (isset($_POST["user_submit"])) {
@@ -26,7 +29,7 @@ if (isset($_POST["user_submit"])) {
 
     if (count($errors) <= 0) {
         Utilities::addUser($username, $email, password_hash($password, PASSWORD_DEFAULT));
-        header('Location: /login.php');
+        header('Location: /login');
     }
 }
 

@@ -1,11 +1,10 @@
 <?php
 
-require_once("config.php");
-require_once("app/Utilities.php");
-
 Utilities::requireAuth(true);
 
 $user = Utilities::getLoggedUser();
+
+$username = null;
 
 $errors_0 = array();
 $errors_1 = array();
@@ -17,6 +16,8 @@ if (isset($_POST["profile_submit"])) {
 
     if (!isset($username) || strlen($username) <= 0) {
         array_push($errors_0, array("username" => "Username cannot be empty!"));
+    } elseif ($username == $user["username"]) {
+        array_push($errors_0, array("username" => "Username cannot be the same!"));
     }
 
     if (count($errors_0) <= 0) {
@@ -41,9 +42,6 @@ if (isset($_POST["profile_submit"])) {
         array_push($success_1, array("password" => "Password successfully updated!"));
     }
 }
-
-require_once(__ROOT__ . "/templates/header.php");
-require_once (__ROOT__ . "/templates/nav.php");
 
 ?>
 
@@ -138,5 +136,3 @@ require_once (__ROOT__ . "/templates/nav.php");
         </div>
     </div>
 </div>
-
-<?php require_once(__ROOT__ . "/templates/footer.php"); ?>
