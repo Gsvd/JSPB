@@ -1,6 +1,7 @@
 <?php
 
 Utilities::requireAuth(true);
+Utilities::redirectIfNotAllowed(RanksEnum::WRITER);
 
 $title = null;
 $content = null;

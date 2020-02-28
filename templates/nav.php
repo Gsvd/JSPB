@@ -5,7 +5,13 @@
         <?php
         if (isset($_SESSION["username"])) {
         ?>
-            <li><a href="/write">Write</a></li>
+            <?php
+            if (Utilities::requiredRank(RanksEnum::WRITER)) {
+            ?>
+                <li><a href="/write">Write</a></li>
+            <?php
+            }
+            ?>
             <li><a href="/profile"><?= $_SESSION["username"] ?></a></li>
             <li><a href="/logout">Logout</a></li>
         <?php

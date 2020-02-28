@@ -33,7 +33,7 @@ if (isset($_POST["profile_submit"])) {
         array_push($errors_1, array("password" => "Password cannot be empty!"));
     } if (!isset($password_verification) || strlen($password_verification) <= 0) {
         array_push($errors_1, array("password_verification" => "Password verification cannot be empty!"));
-    } if (isset($password) && isset($password_verification) && strlen($password) <= 0 && strlen($password_verification) <= 0 && $password != $password_verification || $password != $password_verification) {
+    } if ($password != $password_verification) {
         array_push($errors_1, array("passwords_match" => "Passwords does not match!"));
     }
 
@@ -41,6 +41,15 @@ if (isset($_POST["profile_submit"])) {
         Utilities::updatePassword($user["id"], password_hash($password, PASSWORD_DEFAULT));
         array_push($success_1, array("password" => "Password successfully updated!"));
     }
+} elseif (isset($_POST["update_submit"])) {
+    $userID = $_POST["user_id"];
+    $rankID = $_POST["rank_id"];
+
+    Utilities::updateRank($userID, $rankID);
+} elseif (isset($_POST["delete_submit"])) {
+    $userID = $_POST["user_id"];
+
+    Utilities::deleteUser($userID);
 }
 
 ?>
@@ -48,7 +57,7 @@ if (isset($_POST["profile_submit"])) {
 <div id="content" class="container">
     <div class="row">
         <div class="twelve columns">
-            <h3 class="text-center no-margin-bottom">My profile</h3>
+            <h3 class="text-center no-margin-bottom">My profile - <?= $user["label"] ?></h3>
             <div class="text-center registered">Registered: <?= $user["created"] ?></div>
         </div>
     </div>
@@ -57,11 +66,13 @@ if (isset($_POST["profile_submit"])) {
             <form action="" method="post">
                 <div class="six columns">
                     <label for="email">Your email</label>
-                    <input disabled class="u-full-width input-disabled" id="email" type="email" name="email" placeholder="Email address" value="<?= $user['email'] ?>">
+                    <input disabled class="u-full-width input-disabled" id="email" type="email" name="email"
+                           placeholder="Email address" value="<?= $user['email'] ?>">
                 </div>
                 <div class="six columns">
                     <label for="email">Your username</label>
-                    <input class="u-full-width" id="username" type="text" name="username" placeholder="Username" value="<?= $user['username'] ?>">
+                    <input class="u-full-width" id="username" type="text" name="username" placeholder="Username"
+                           value="<?= $user['username'] ?>">
                 </div>
                 <div class="row">
                     <div class="offset-by-three six columns">
@@ -101,7 +112,8 @@ if (isset($_POST["profile_submit"])) {
                 </div>
                 <div class="six columns">
                     <label for="password_verification">Password verification</label>
-                    <input class="u-full-width" id="password_verification" type="password" name="password_verification" placeholder="Password verification">
+                    <input class="u-full-width" id="password_verification" type="password" name="password_verification"
+                           placeholder="Password verification">
                 </div>
                 <div class="row">
                     <div class="offset-by-three six columns">
@@ -133,6 +145,61 @@ if (isset($_POST["profile_submit"])) {
                     </div>
                 </div>
             </form>
+            <?php
+            if (Utilities::requiredRank(RanksEnum::ADMIN)) {
+                $users = Utilities::getUsers();
+                $ranks = Utilities::getRanks();
+                ?>
+                <div class="twelve columns separator"></div>
+                <div class="twelve columns">
+                    <table class="u-full-width">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Rank</th>
+                            <th>Created</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                        foreach ($users as $u) {
+                            ?>
+                            <tr>
+                                <form action="" method="post">
+                                    <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
+                                    <td><?= $u["id"] ?></td>
+                                    <td><?= $u["username"] ?></td>
+                                    <td><?= $u["email"] ?></td>
+                                    <td>
+                                        <select name="rank_id">
+                                            <?php
+                                            foreach ($ranks as $rank) {
+                                                ?>
+                                                <option
+                                                    value="<?= $rank['id'] ?>" <?= $u["rank"] == $rank["id"] ? 'selected' : '' ?>><?= $rank["label"] ?></option>
+                                                <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                    <td><?= $u["created"] ?></td>
+                                    <td><input class="u-full-width" type="submit" value="Update" name="update_submit"></td>
+                                    <td><input <?= $u["id"] == $user["id"] ? 'disabled' : '' ?> class="u-full-width <?= $u["id"] == $user["id"] ? 'input-disabled' : '' ?>" type="submit" value="Delete" name="delete_submit"></td>
+                                </form>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php
+            }
+            ?>
         </div>
     </div>
 </div>

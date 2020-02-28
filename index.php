@@ -2,6 +2,10 @@
 
 $request = $_SERVER['REQUEST_URI'];
 
+//ENUMERATIONS
+require_once(__DIR__ . "/app/enum/RanksEnum.php");
+require_once(__DIR__ . "/app/enum/FormsEnum.php");
+
 require_once(__DIR__ . "/config.php");
 require_once(__DIR__ . "/app/Utilities.php");
 
