@@ -1,3 +1,3 @@
 <?php
 
-Utilities::logout();
+SecurityService::logout();

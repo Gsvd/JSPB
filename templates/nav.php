@@ -6,7 +6,7 @@
         if (isset($_SESSION["username"])) {
         ?>
             <?php
-            if (Utilities::requiredRank(RanksEnum::WRITER)) {
+            if (SecurityService::requiredRank(RanksEnum::WRITER)) {
             ?>
                 <li><a href="/write">Write</a></li>
             <?php

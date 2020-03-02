@@ -1,8 +1,8 @@
 <?php
 
-Utilities::requireAuth(true);
+SecurityService::requireAuth(true);
 
-$user = Utilities::getLoggedUser();
+$user = SecurityService::getLogged();
 
 $username = null;
 
@@ -21,8 +21,8 @@ if (isset($_POST["profile_submit"])) {
     }
 
     if (count($errors_0) <= 0) {
-        Utilities::updateUsername($user["id"], $username);
-        $user = Utilities::getLoggedUser();
+        UserService::updateUsername($user["id"], $username);
+        $user = SecurityService::getLogged();
         array_push($success_0, array("username" => "Username successfully updated!"));
     }
 } elseif (isset($_POST["password_submit"])) {
@@ -38,18 +38,18 @@ if (isset($_POST["profile_submit"])) {
     }
 
     if (count($errors_1) <= 0) {
-        Utilities::updatePassword($user["id"], password_hash($password, PASSWORD_DEFAULT));
+        UserService::updatePassword($user["id"], password_hash($password, PASSWORD_DEFAULT));
         array_push($success_1, array("password" => "Password successfully updated!"));
     }
 } elseif (isset($_POST["update_submit"])) {
     $userID = $_POST["user_id"];
     $rankID = $_POST["rank_id"];
 
-    Utilities::updateRank($userID, $rankID);
+    UserService::updateRank($userID, $rankID);
 } elseif (isset($_POST["delete_submit"])) {
     $userID = $_POST["user_id"];
 
-    Utilities::deleteUser($userID);
+    UserService::delete($userID);
 }
 
 ?>
@@ -146,9 +146,9 @@ if (isset($_POST["profile_submit"])) {
                 </div>
             </form>
             <?php
-            if (Utilities::requiredRank(RanksEnum::ADMIN)) {
-                $users = Utilities::getUsers();
-                $ranks = Utilities::getRanks();
+            if (SecurityService::requiredRank(RanksEnum::ADMIN)) {
+                $users = UserService::getAll();
+                $ranks = UserService::getRanks();
                 ?>
                 <div class="twelve columns separator"></div>
                 <div class="twelve columns">

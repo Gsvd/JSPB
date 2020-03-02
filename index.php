@@ -8,6 +8,8 @@ require_once(__DIR__ . "/app/enum/FormsEnum.php");
 
 require_once(__DIR__ . "/config.php");
 require_once(__DIR__ . "/app/Utilities.php");
+require_once(__DIR__ . "/app/services/UserService.php");
+require_once(__DIR__ . "/app/services/SecurityService.php");
 
 require_once(__DIR__ . "/templates/header.php");
 require_once(__DIR__ . "/templates/nav.php");

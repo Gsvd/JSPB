@@ -1,9 +1,6 @@
 <?php
 
-require_once("config.php");
-require_once("app/Utilities.php");
-
-Utilities::requireAuth(false);
+SecurityService::requireAuth(false);
 
 $username = null;
 $email = null;
@@ -28,7 +25,7 @@ if (isset($_POST["user_submit"])) {
     }
 
     if (count($errors) <= 0) {
-        Utilities::addUser($username, $email, password_hash($password, PASSWORD_DEFAULT));
+        UserService::add($username, $email, password_hash($password, PASSWORD_DEFAULT));
         header('Location: /login');
     }
 }

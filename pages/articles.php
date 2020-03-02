@@ -1,16 +1,16 @@
 <?php
 
 if (isset($_POST["article_delete"])) {
-    Utilities::deleteArticle($_POST["article_id"]);
+    ArticleService::delete($_POST["article_id"]);
 }
 
-$articles = Utilities::getArticles();
+$articles = ArticleService::getAll();
 
 ?>
 
 <div id="content" class="container">
     <?php
-    if (!Utilities::isLogged()) {
+    if (!SecurityService::isLogged()) {
         ?>
         <div class="row">
             <div class="twelve columns text-center">

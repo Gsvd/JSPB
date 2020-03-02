@@ -1,6 +1,6 @@
 <?php
 
-Utilities::requireAuth(false);
+SecurityService::requireAuth(false);
 
 $email = null;
 
@@ -17,7 +17,7 @@ if (isset($_POST["login_submit"])) {
     }
 
     if (count($errors) <= 0) {
-        if (!Utilities::login($email, $password)) {
+        if (!SecurityService::login($email, $password)) {
             array_push($errors, array("no_account" => "User or password incorrect!"));
         } else {
             header('Location: /');

@@ -1,7 +1,7 @@
 <?php
 
-Utilities::requireAuth(true);
-Utilities::redirectIfNotAllowed(RanksEnum::WRITER);
+SecurityService::requireAuth(true);
+SecurityService::redirectIfNotAllowed(RanksEnum::WRITER);
 
 $title = null;
 $content = null;
@@ -19,7 +19,7 @@ if (isset($_POST["article_submit"])) {
     }
 
     if (count($errors) <= 0) {
-        Utilities::addArticle($title, $content, $_SESSION["username"]);
+        ArticleService::add($title, $content, $_SESSION["username"]);
         array_push($success, array("article" => "Article successfully added!"));
     }
 }
