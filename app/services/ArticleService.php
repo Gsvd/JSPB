@@ -4,6 +4,17 @@
 class ArticleService
 {
 
+    public static function get($id) {
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "SELECT * FROM articles WHERE id = :id";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            ':id' => $id
+        ));
+        return $sth->fetch();
+    }
+
     public static function getAll() {
         $db = new Database();
         $dbh = $db->connect();

@@ -27,17 +27,25 @@ $articles = ArticleService::getAll();
                         <div class="row">
                             <div class="eleven columns title">
                                 <h2>
-                                    <?= $article['title'] ?>
+                                    <a href="/article/<?= $article['id'] ?>">
+                                        <?= $article['title'] ?>
+                                    </a>
                                 </h2>
                             </div>
-                            <div class="one column">
-                                <input type="hidden" value="<?= $article['id'] ?>" name="article_id">
-                                <input type="submit" value="Delete" name="article_delete">
-                            </div>
+                            <?php
+                            if (SecurityService::requiredRank(RanksEnum::ADMIN)) {
+                                ?>
+                                <div class="one column">
+                                    <input type="hidden" value="<?= $article['id'] ?>" name="article_id">
+                                    <input type="submit" value="Delete" name="article_delete">
+                                </div>
+                                <?php
+                            }
+                            ?>
                         </div>
                         <div class="row">
                             <div class="twelve columns content">
-                                <?= $article['content'] ?>
+                                <?= Utilities::previewText($article['content']) ?>
                             </div>
                         </div>
                         <div class="row">

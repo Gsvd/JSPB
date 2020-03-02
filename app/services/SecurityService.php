@@ -79,4 +79,8 @@ class SecurityService
         header('Location: /');
     }
 
+    public static function redirectTo($http) {
+        header('Location: /error/' . strval($http));
+    }
+
 }
