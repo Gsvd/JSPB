@@ -1,0 +1,5 @@
+{
+  "require": {
+    "ckeditor/ckeditor": "4.*"
+  }
+}

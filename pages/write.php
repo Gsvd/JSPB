@@ -35,7 +35,7 @@ if (isset($_POST["article_submit"])) {
         </div>
         <div class="row">
             <div class="twelve columns">
-                <textarea name="article_content"
+                <textarea id="write" name="article_content"
                           class="u-full-width"
                           cols="30"
                           rows="10"
@@ -44,7 +44,7 @@ if (isset($_POST["article_submit"])) {
         </div>
         <div class="row">
             <div class="offset-by-three six columns">
-                <input class="u-full-width" type="submit" value="Submit" name="article_submit">
+                <input class="u-full-width space-top" type="submit" value="Submit" name="article_submit">
             </div>
         </div>
         <div class="row">
@@ -72,4 +72,7 @@ if (isset($_POST["article_submit"])) {
             </div>
         </div>
     </form>
+    <script>
+        CKEDITOR.replace( 'write' );
+    </script>
 </div>

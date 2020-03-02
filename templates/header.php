@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/assets/css/normalize.css">
     <link rel="stylesheet" href="/assets/css/skeleton.css">
     <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="/vendor/ckeditor/ckeditor/ckeditor.js"></script>
     <title>JSPB</title>
 </head>
 <body>
