@@ -1,13 +1,14 @@
 <?php
 
-$errors = array();
+SecurityService::redirectIfNotAllowed(PagesService::get(PagesEnum::ABOUT)["rank"]);
+$page = PagesService::get(PagesEnum::ABOUT);
 
 ?>
 
 <div id="content" class="container">
     <div class="row">
         <div class="twelve columns">
-            ABOUT
+            <?= $page["content"] ?>
         </div>
     </div>
 </div>

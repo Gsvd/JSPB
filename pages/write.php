@@ -1,7 +1,7 @@
 <?php
 
 SecurityService::requireAuth(true);
-SecurityService::redirectIfNotAllowed(RanksEnum::WRITER);
+SecurityService::redirectIfNotAllowed(PagesService::get(PagesEnum::WRITE)["id"]);
 
 $title = null;
 $content = null;
@@ -75,6 +75,6 @@ if (isset($_POST["article_submit"])) {
         </div>
     </form>
     <script>
-        CKEDITOR.replace( 'write' );
+        CKEDITOR.replace('write');
     </script>
 </div>
