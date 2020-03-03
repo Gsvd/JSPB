@@ -9,6 +9,8 @@ $content = null;
 $errors = array();
 $success = array();
 
+$user = SecurityService::getLogged();
+
 if (isset($_POST["article_submit"])) {
     $title = $_POST["article_title"];
     $content = $_POST["article_content"];
@@ -19,7 +21,7 @@ if (isset($_POST["article_submit"])) {
     }
 
     if (count($errors) <= 0) {
-        ArticleService::add($title, $content, $_SESSION["username"]);
+        ArticleService::add($title, $content, $user["id"]);
         array_push($success, array("article" => "Article successfully added!"));
     }
 }

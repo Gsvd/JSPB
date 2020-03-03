@@ -20,6 +20,7 @@ $articles = ArticleService::getAll();
         <?php
     } else {
         foreach ($articles as $article) {
+            $author = UserService::get($article["author"]);
             ?>
             <form action="" method="post">
                 <div class="row">
@@ -50,7 +51,7 @@ $articles = ArticleService::getAll();
                         </div>
                         <div class="row">
                             <div class="twelve columns author">
-                                by <?= $article['author'] ?>, <?= $article['created'] ?>
+                                by <?= $author["username"] ?>, <?= $article['created'] ?>
                             </div>
                         </div>
                     </div>

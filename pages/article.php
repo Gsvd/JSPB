@@ -18,6 +18,7 @@ if ($article == null)
         </div>
         <?php
     } else {
+        $author = UserService::get($article["author"]);
         ?>
         <div class="row">
             <div class="article">
@@ -35,7 +36,7 @@ if ($article == null)
                 </div>
                 <div class="row">
                     <div class="twelve columns author">
-                        by <?= $article['author'] ?>, <?= $article['created'] ?>
+                        by <?= $author["username"] ?>, <?= $article['created'] ?>
                     </div>
                 </div>
             </div>

@@ -18,6 +18,29 @@ class UserService
         ));
     }
 
+    public static function get($id) {
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "
+        SELECT u.id,
+               u.email,
+               u.username,
+               u.password,
+               u.created,
+               r.id AS rank,
+               r.label,
+               r.code
+        FROM users AS u INNER JOIN ranks AS r
+        ON u.rank = r.id
+        WHERE u.id = :id
+        ";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            ':id' => $id
+        ));
+        return $sth->fetch();
+    }
+
     public static function delete($id) {
         $db = new Database();
         $dbh = $db->connect();
