@@ -60,6 +60,10 @@
     text-align: center;
 }
 
+.text-right {
+    text-align: right;
+}
+
 .no-margin-bottom {
     margin-bottom: 0;
 }
@@ -85,4 +89,10 @@
 
 .space-top {
     margin-top: 25px;
+}
+
+.comment {
+    border: 1px #DDDDDD solid;
+    padding: 15px;
+    margin: 5px 0 5px 0;
 }

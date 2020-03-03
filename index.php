@@ -11,6 +11,7 @@ require_once(__DIR__ . "/app/Utilities.php");
 require_once(__DIR__ . "/app/services/UserService.php");
 require_once(__DIR__ . "/app/services/SecurityService.php");
 require_once(__DIR__ . "/app/services/ArticleService.php");
+require_once(__DIR__ . "/app/services/CommentService.php");
 
 require_once(__DIR__ . "/templates/header.php");
 require_once(__DIR__ . "/templates/nav.php");
