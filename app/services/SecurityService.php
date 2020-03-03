@@ -45,8 +45,6 @@ class SecurityService
             } else {
                 return false;
             }
-        } elseif ($rank == RanksEnum::VISITOR) {
-            return true;
         }
     }
 

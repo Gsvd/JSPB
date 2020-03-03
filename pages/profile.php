@@ -8,10 +8,8 @@ $username = null;
 
 $errors_0 = array();
 $errors_1 = array();
-$errors_2 = array();
 $success_0 = array();
 $success_1 = array();
-$success_2 = array();
 
 if (isset($_POST["profile_submit"])) {
     $username = $_POST["username"];
@@ -52,17 +50,6 @@ if (isset($_POST["profile_submit"])) {
     $userID = $_POST["user_id"];
 
     UserService::delete($userID);
-} elseif (isset($_POST["about_submit"])) {
-    $aboutContent = $_POST["about_content"];
-
-    if (!isset($aboutContent) || strlen($aboutContent) <= 0) {
-        array_push($errors_2, array("about" => "About content cannot be empty!"));
-    }
-
-    if (count($errors_2) <= 0) {
-        PagesService::updateContent(PagesEnum::ABOUT, $aboutContent);
-        array_push($success_2, array("about" => "About content successfully updated!"));
-    }
 }
 
 ?>
@@ -162,44 +149,7 @@ if (isset($_POST["profile_submit"])) {
             if (SecurityService::requiredRank(RanksEnum::ADMIN)) {
                 $users = UserService::getAll();
                 $ranks = UserService::getRanks();
-                $about = PagesService::get(PagesEnum::ABOUT);
                 ?>
-                <div class="twelve columns separator"></div>
-                <div class="twelve columns">
-                    <form action="" method="post">
-                        <div class="twelve columns">
-                            <label for="about_content">About content</label>
-                            <textarea class="u-full-width" name="about_content" id="about_content" cols="30" rows="10" placeholder="Write your about page content."><?= $about["content"] ?></textarea>
-                        </div>
-                        <div class="twelve columns">
-                            <div class="six columns offset-by-three">
-                                <input class="u-full-width space-top" name="about_submit" type="submit" value="Update">
-                            </div>
-                        </div>
-                    </form>
-                    <div class="twelve columns">
-                        <ul>
-                            <div>
-                                <?php
-                                foreach ($errors_2 as $error) {
-                                    ?>
-                                    <li class="error"><?= array_values($error)[0] ?></li>
-                                    <?php
-                                }
-                                ?>
-                            </div>
-                            <div>
-                                <?php
-                                foreach ($success_2 as $success) {
-                                    ?>
-                                    <li class="success"><?= array_values($success)[0] ?></li>
-                                    <?php
-                                }
-                                ?>
-                            </div>
-                        </ul>
-                    </div>
-                </div>
                 <div class="twelve columns separator"></div>
                 <div class="twelve columns">
                     <table class="u-full-width">
@@ -252,7 +202,4 @@ if (isset($_POST["profile_submit"])) {
             ?>
         </div>
     </div>
-    <script>
-        CKEDITOR.replace('about_content');
-    </script>
 </div>
