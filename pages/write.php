@@ -34,7 +34,7 @@ if (isset($_POST["article_submit"])) {
 
     if (count($errors) <= 0) {
         if (move_uploaded_file($_FILES['input_cover']['tmp_name'],  $destination . $filename)) {
-            ArticleService::add($title, $content, $user["id"], $filename);
+            ArticleService::add($title, $content, $user->getId(), $filename);
             array_push($success, array("article" => "Article successfully added!"));
         } else {
             array_push($errors, array("cover" => "Cover file cannot be uploaded!"));

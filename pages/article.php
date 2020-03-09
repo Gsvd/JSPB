@@ -18,7 +18,7 @@ if (isset($_POST["comment_submit"])) {
     }
 
     if (count($errors) <= 0) {
-        CommentService::add($comment, $user["id"], $article["id"]);
+        CommentService::add($comment, $user->getId(), $article->getId());
         array_push($success, array("comment" => "Comment successfully added!"));
     }
 } else if (isset($_POST["comment_delete"])) {
@@ -27,7 +27,7 @@ if (isset($_POST["comment_submit"])) {
     CommentService::delete($commentID);
 }
 
-$comments = CommentService::getByArticleID($article["id"]);
+$comments = $article->getComments();
 
 ?>
 
@@ -42,30 +42,30 @@ $comments = CommentService::getByArticleID($article["id"]);
         </div>
         <?php
     } else {
-        $author = UserService::get($article["author"]);
+        $author = UserService::get($article->getAuthor()->getId());
         ?>
         <div class="row">
             <div class="article">
                 <div class="row">
                     <div class="twelve columns title">
-                        <img class="cover" src="/assets/images/covers/<?= $article['cover'] ?>" alt="">
+                        <img class="cover" src="/assets/images/covers/<?= $article->getCover() ?>" alt="">
                     </div>
                 </div>
                 <div class="row">
                     <div class="twelve columns title">
                         <h2>
-                            <?= $article['title'] ?>
+                            <?= $article->getTitle() ?>
                         </h2>
                     </div>
                 </div>
                 <div class="row">
                     <div class="twelve columns content">
-                        <?= $article['content'] ?>
+                        <?= $article->getContent() ?>
                     </div>
                 </div>
                 <div class="row">
                     <div class="twelve columns author">
-                        by <?= $author["username"] ?>, <?= $article['created'] ?>
+                        by <?= $author->getUsername() ?>, <?= $article->getCreated() ?>
                     </div>
                 </div>
             </div>
@@ -114,18 +114,17 @@ $comments = CommentService::getByArticleID($article["id"]);
                 <div class="row">
                     <?php
                     foreach ($comments as $comment) {
-                        $author = UserService::get($comment["author"]);
                         ?>
                         <div class="twelve columns comment">
                             <div class="ten columns">
-                                <?= $comment["content"] ?>
+                                <?= $comment->getContent() ?>
                             </div>
                             <?php
-                            if ($comment["author"] == $user["id"] || SecurityService::requiredRank(RanksEnum::ADMIN)) {
+                            if ($comment->getAuthor() == $user->getId() || SecurityService::requiredRank(RanksEnum::ADMIN)) {
                                 ?>
                                 <div class="two columns">
                                     <form action="" method="post">
-                                        <input name="comment_id" type="hidden" value="<?= $comment['id'] ?>">
+                                        <input name="comment_id" type="hidden" value="<?= $comment->getId() ?>">
                                         <input name="comment_delete" class="u-full-width" type="submit" value="Delete">
                                     </form>
                                 </div>
@@ -133,7 +132,7 @@ $comments = CommentService::getByArticleID($article["id"]);
                             }
                             ?>
                             <div class="twelve columns author space-top text-right">
-                                by <?= $author["username"] ?>, <?= $article['created'] ?>
+                                by <?= $comment->getAuthor()->getUsername() ?>, <?= $comment->getCreated() ?>
                             </div>
                         </div>
                         <?php

@@ -20,7 +20,6 @@ $articles = ArticleService::getAll();
         <?php
     } else {
         foreach ($articles as $article) {
-            $author = UserService::get($article["author"]);
             ?>
             <form action="" method="post">
                 <div class="row">
@@ -28,8 +27,8 @@ $articles = ArticleService::getAll();
                         <div class="row">
                             <div class="eleven columns title">
                                 <h2>
-                                    <a href="/article/<?= $article['id'] ?>">
-                                        <?= $article['title'] ?>
+                                    <a href="/article/<?= $article->getId() ?>">
+                                        <?= $article->getTitle() ?>
                                     </a>
                                 </h2>
                             </div>
@@ -37,7 +36,7 @@ $articles = ArticleService::getAll();
                             if (SecurityService::requiredRank(RanksEnum::ADMIN)) {
                                 ?>
                                 <div class="one column">
-                                    <input type="hidden" value="<?= $article['id'] ?>" name="article_id">
+                                    <input type="hidden" value="<?= $article->getId() ?>" name="article_id">
                                     <input type="submit" value="Delete" name="article_delete">
                                 </div>
                                 <?php
@@ -46,12 +45,12 @@ $articles = ArticleService::getAll();
                         </div>
                         <div class="row">
                             <div class="twelve columns content">
-                                <?= Utilities::previewText($article['content']) ?>
+                                <?= Utilities::previewText($article->getContent()) ?>
                             </div>
                         </div>
                         <div class="row">
                             <div class="twelve columns author">
-                                by <?= $author["username"] ?>, <?= $article['created'] ?>
+                                by <?= $article->getAuthor()->getUsername() ?>, <?= $article->getCreated() ?>
                             </div>
                         </div>
                     </div>

@@ -16,13 +16,13 @@ if (isset($_POST["profile_submit"])) {
 
     if (!isset($username) || strlen($username) <= 0) {
         array_push($errors_0, array("username" => "Username cannot be empty!"));
-    } elseif ($username == $user["username"]) {
+    } elseif ($username == $user->getUsername()) {
         array_push($errors_0, array("username" => "Username cannot be the same!"));
     }
 
     if (count($errors_0) <= 0) {
-        UserService::updateUsername($user["id"], $username);
-        $user = SecurityService::getLogged();
+        $user->setUsername($username);
+        UserService::update($user);
         array_push($success_0, array("username" => "Username successfully updated!"));
     }
 } elseif (isset($_POST["password_submit"])) {
@@ -38,13 +38,17 @@ if (isset($_POST["profile_submit"])) {
     }
 
     if (count($errors_1) <= 0) {
-        UserService::updatePassword($user["id"], password_hash($password, PASSWORD_DEFAULT));
+        $user->setPassword($password);
+        UserService::update($user);
         array_push($success_1, array("password" => "Password successfully updated!"));
     }
 } elseif (isset($_POST["update_submit"])) {
     $userID = $_POST["user_id"];
     $rankID = $_POST["rank_id"];
 
+    $user = UserService::get($userID);
+    $user->setRank(RankService::get($rankID));
+    UserService::update($user);
     UserService::updateRank($userID, $rankID);
 } elseif (isset($_POST["delete_submit"])) {
     $userID = $_POST["user_id"];
@@ -52,13 +56,15 @@ if (isset($_POST["profile_submit"])) {
     UserService::delete($userID);
 }
 
+$user = SecurityService::getLogged();
+
 ?>
 
 <div id="content" class="container">
     <div class="row">
         <div class="twelve columns">
-            <h3 class="text-center no-margin-bottom">My profile - <?= $user["label"] ?></h3>
-            <div class="text-center registered">Registered: <?= $user["created"] ?></div>
+            <h3 class="text-center no-margin-bottom">My profile - <?= $user->getRank()->getLabel() ?></h3>
+            <div class="text-center registered">Registered: <?= $user->getCreated() ?></div>
         </div>
     </div>
     <div class="row">
@@ -67,12 +73,12 @@ if (isset($_POST["profile_submit"])) {
                 <div class="six columns">
                     <label for="email">Your email</label>
                     <input disabled class="u-full-width input-disabled" id="email" type="email" name="email"
-                           placeholder="Email address" value="<?= $user['email'] ?>">
+                           placeholder="Email address" value="<?= $user->getEmail() ?>">
                 </div>
                 <div class="six columns">
                     <label for="email">Your username</label>
                     <input class="u-full-width" id="username" type="text" name="username" placeholder="Username"
-                           value="<?= $user['username'] ?>">
+                           value="<?= $user->getUsername() ?>">
                 </div>
                 <div class="row">
                     <div class="offset-by-three six columns">
@@ -148,7 +154,7 @@ if (isset($_POST["profile_submit"])) {
             <?php
             if (SecurityService::requiredRank(RanksEnum::ADMIN)) {
                 $users = UserService::getAll();
-                $ranks = UserService::getRanks();
+                $ranks = RankService::getAll();
                 ?>
                 <div class="twelve columns separator"></div>
                 <div class="twelve columns">
@@ -170,25 +176,25 @@ if (isset($_POST["profile_submit"])) {
                             ?>
                             <tr>
                                 <form action="" method="post">
-                                    <input type="hidden" name="user_id" value="<?= $u['id'] ?>">
-                                    <td><?= $u["id"] ?></td>
-                                    <td><?= $u["username"] ?></td>
-                                    <td><?= $u["email"] ?></td>
+                                    <input type="hidden" name="user_id" value="<?= $u->getId() ?>">
+                                    <td><?= $u->getId() ?></td>
+                                    <td><?= $u->getUsername() ?></td>
+                                    <td><?= $u->getEmail() ?></td>
                                     <td>
                                         <select name="rank_id">
                                             <?php
                                             foreach ($ranks as $rank) {
                                                 ?>
                                                 <option
-                                                    value="<?= $rank['id'] ?>" <?= $u["rank"] == $rank["id"] ? 'selected' : '' ?>><?= $rank["label"] ?></option>
+                                                    value="<?= $rank->getId() ?>" <?= $u->getRank()->getId() == $rank->getId() ? 'selected' : '' ?>><?= $rank->getLabel() ?></option>
                                                 <?php
                                             }
                                             ?>
                                         </select>
                                     </td>
-                                    <td><?= $u["created"] ?></td>
+                                    <td><?= $u->getCreated() ?></td>
                                     <td><input class="u-full-width" type="submit" value="Update" name="update_submit"></td>
-                                    <td><input <?= $u["id"] == $user["id"] ? 'disabled' : '' ?> class="u-full-width <?= $u["id"] == $user["id"] ? 'input-disabled' : '' ?>" type="submit" value="Delete" name="delete_submit"></td>
+                                    <td><input <?= $u->getId() == $user->getId() ? 'disabled' : '' ?> class="u-full-width <?= $u->getId() == $user->getId() ? 'input-disabled' : '' ?>" type="submit" value="Delete" name="delete_submit"></td>
                                 </form>
                             </tr>
                             <?php

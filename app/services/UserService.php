@@ -18,6 +18,20 @@ class UserService
         ));
     }
 
+    public static function update(User $user) {
+        $db = new Database();
+        $dbh = $db->connect();
+        $sql = "UPDATE users SET username = :username, password = :password, email = :email, rank = :rank WHERE id = :id";
+        $sth = $dbh->prepare($sql);
+        $sth->execute(array(
+            ':username' => $user->getUsername(),
+            ':password' => $user->getPassword(),
+            ':email' => $user->getEmail(),
+            ':rank' => $user->getRank()->getId(),
+            ':id' => $user->getId()
+        ));
+    }
+
     public static function get($id) {
         $db = new Database();
         $dbh = $db->connect();
@@ -27,7 +41,7 @@ class UserService
                u.username,
                u.password,
                u.created,
-               r.id AS rank,
+               r.id AS 'rank',
                r.label,
                r.code
         FROM users AS u INNER JOIN ranks AS r
@@ -38,7 +52,9 @@ class UserService
         $sth->execute(array(
             ':id' => $id
         ));
-        return $sth->fetch();
+        $row = $sth->fetch();
+        $user = new User($row['id'], $row['username'], $row['password'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
+        return $user;
     }
 
     public static function delete($id) {
@@ -93,7 +109,7 @@ class UserService
                u.username,
                u.password,
                u.created,
-               r.id AS rank,
+               r.id AS 'rank',
                r.label,
                r.code
         FROM users AS u INNER JOIN ranks AS r
@@ -101,16 +117,13 @@ class UserService
         ";
         $sth = $dbh->prepare($sql);
         $sth->execute();
-        return $sth->fetchAll();
-    }
-
-    public static function getRanks() {
-        $db = new Database();
-        $dbh = $db->connect();
-        $sql = "SELECT * FROM ranks ORDER BY id ASC";
-        $sth = $dbh->prepare($sql);
-        $sth->execute();
-        return $sth->fetchAll();
+        $rows = $sth->fetchAll();
+        $users = array();
+        foreach ($rows as $row) {
+            $user = new User($row['id'], $row['username'], $row['password'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
+            array_push($users, $user);
+        }
+        return $users;
     }
 
 }

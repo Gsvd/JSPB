@@ -13,7 +13,7 @@ class SecurityService
                u.username,
                u.password,
                u.created,
-               r.id AS rank,
+               r.id AS 'rank',
                r.label,
                r.code
         FROM users AS u INNER JOIN ranks AS r
@@ -22,9 +22,11 @@ class SecurityService
         ";
         $sth = $dbh->prepare($sql);
         $sth->execute(array(
-            'id' => $id
+            ':id' => $id
         ));
-        return $sth->fetch();
+        $row = $sth->fetch();
+        $user = new User($row['id'], $row['username'], $row['password'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
+        return $user;
     }
 
     public static function isLogged() {
@@ -40,7 +42,7 @@ class SecurityService
     public static function requiredRank($rank) {
         if (SecurityService::isLogged()) {
             $user = SecurityService::getLogged();
-            if ($user["rank"] <= $rank) {
+            if ($user->getRank()->getId() <= $rank) {
                 return true;
             } else {
                 return false;

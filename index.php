@@ -2,6 +2,12 @@
 
 $request = $_SERVER['REQUEST_URI'];
 
+//MODELS
+require_once(__DIR__ . "/app/models/User.php");
+require_once(__DIR__ . "/app/models/Rank.php");
+require_once(__DIR__ . "/app/models/Article.php");
+require_once(__DIR__ . "/app/models/Comment.php");
+
 //ENUMERATIONS
 require_once(__DIR__ . "/app/enum/RanksEnum.php");
 require_once(__DIR__ . "/app/enum/FormsEnum.php");
@@ -11,6 +17,7 @@ require_once(__DIR__ . "/app/Utilities.php");
 require_once(__DIR__ . "/app/services/UserService.php");
 require_once(__DIR__ . "/app/services/SecurityService.php");
 require_once(__DIR__ . "/app/services/ArticleService.php");
+require_once(__DIR__ . "/app/services/RankService.php");
 require_once(__DIR__ . "/app/services/CommentService.php");
 
 require_once(__DIR__ . "/templates/header.php");

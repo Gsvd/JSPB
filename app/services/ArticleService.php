@@ -12,7 +12,10 @@ class ArticleService
         $sth->execute(array(
             ':id' => $id
         ));
-        return $sth->fetch();
+        $row = $sth->fetch();
+        $user = UserService::get($row['author']);
+        $article = new Article($row['id'], $row['title'], $row['content'], $user, $row['created'], $row['cover']);
+        return $article;
     }
 
     public static function getAll() {
@@ -21,7 +24,14 @@ class ArticleService
         $sql = "SELECT * FROM articles ORDER BY id DESC";
         $sth = $dbh->prepare($sql);
         $sth->execute();
-        return $sth->fetchAll();
+        $rows = $sth->fetchAll();
+        $articles = array();
+        foreach ($rows as $row) {
+            $user = UserService::get($row['author']);
+            $article = new Article($row['id'], $row['title'], $row['content'], $user, $row['created'], $row['cover']);
+            array_push($articles, $article);
+        }
+        return $articles;
     }
 
     public static function delete($id) {

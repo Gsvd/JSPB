@@ -28,19 +28,23 @@ class CommentService
         ));
     }
 
-    public static function getByArticleID($article) {
+    public static function getByArticle(Article $article) {
         $db = new Database();
         $dbh = $db->connect();
         $sql = "SELECT * FROM comments WHERE article = :article ORDER BY id DESC";
         $sth = $dbh->prepare($sql);
         $sth->execute(array(
-            ':article' => $article
+            ':article' => $article->getId()
         ));
-        return $sth->fetchAll();
-    }
-
-    public static function isCreator($comment, $user) {
-
+        $rows = $sth->fetchAll();
+        $comments = array();
+        foreach ($rows as $row) {
+            $user = UserService::get($row['author']);
+            $article = ArticleService::get($row['article']);
+            $comment = new Comment($row['id'], $user, $row['content'], $row['created'], $article);
+            array_push($comments, $comment);
+        }
+        return $comments;
     }
 
 }
