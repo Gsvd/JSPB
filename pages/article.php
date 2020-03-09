@@ -48,6 +48,11 @@ $comments = CommentService::getByArticleID($article["id"]);
             <div class="article">
                 <div class="row">
                     <div class="twelve columns title">
+                        <img class="cover" src="/assets/images/covers/<?= $article['cover'] ?>" alt="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="twelve columns title">
                         <h2>
                             <?= $article['title'] ?>
                         </h2>

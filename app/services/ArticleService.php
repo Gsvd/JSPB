@@ -34,17 +34,18 @@ class ArticleService
         ));
     }
 
-    public static function add($title, $content, $author) {
+    public static function add($title, $content, $author, $cover) {
         $now = new DateTime();
         $db = new Database();
         $dbh = $db->connect();
-        $sql = "INSERT INTO articles(title, content, author, created) VALUES(:title, :content, :author, :created)";
+        $sql = "INSERT INTO articles(title, content, author, created, cover) VALUES(:title, :content, :author, :created, :cover)";
         $sth = $dbh->prepare($sql);
         $sth->execute(array(
             ':title' => $title,
             ':content' => $content,
             ':author' => $author,
-            ':created' => $now->format("Y-m-d H:i:s")
+            ':created' => $now->format("Y-m-d H:i:s"),
+            ':cover' => $cover
         ));
     }
 

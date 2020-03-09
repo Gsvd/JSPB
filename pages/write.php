@@ -18,21 +18,42 @@ if (isset($_POST["article_submit"])) {
         array_push($errors, array("title" => "Title cannot be empty!"));
     } if (!isset($content) || strlen($content) <= 0) {
         array_push($errors, array("content" => "Content cannot be empty!"));
+    } if ($_FILES["input_cover"]["error"] == UPLOAD_ERR_NO_FILE) {
+        array_push($errors, array("cover" => "Cover file cannot be empty!"));
+    } else {
+        $allowed = array("png", "jpg", "jpeg");
+        $destination = __ROOT__ . "/assets/images/covers/";
+        $extension = strtolower(pathinfo($_FILES['input_cover']['name'], PATHINFO_EXTENSION));
+
+        if (!in_array($extension, $allowed)) {
+            array_push($errors, array("cover" => "Cover file extension not in " . implode( ", ", $allowed ) . "!"));
+        } else {
+            $filename = uniqid() . "." . $extension;
+        }
     }
 
     if (count($errors) <= 0) {
-        ArticleService::add($title, $content, $user["id"]);
-        array_push($success, array("article" => "Article successfully added!"));
+        if (move_uploaded_file($_FILES['input_cover']['tmp_name'],  $destination . $filename)) {
+            ArticleService::add($title, $content, $user["id"], $filename);
+            array_push($success, array("article" => "Article successfully added!"));
+        } else {
+            array_push($errors, array("cover" => "Cover file cannot be uploaded!"));
+        }
     }
 }
 
 ?>
 
 <div id="content" class="container">
-    <form action="" method="post">
+    <form enctype="multipart/form-data" action="" method="post">
         <div class="row">
             <div class="twelve columns">
                 <input class="u-full-width" type="text" name="article_title" placeholder="Lorem ipsum dolor sit amet" value="<?= $title ?>">
+            </div>
+        </div>
+        <div class="row">
+            <div class="twelve columns">
+                <input class="u-full-width" name="input_cover" type="file">
             </div>
         </div>
         <div class="row">
