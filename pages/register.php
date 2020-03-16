@@ -13,15 +13,15 @@ if (isset($_POST["user_submit"])) {
     $password = $_POST["password"];
     $password_verification = $_POST["password_verification"];
     if (!isset($username) || strlen($username) <= 0) {
-        array_push($errors, array("username" => "Username cannot be empty!"));
+        array_push($errors, array("Username cannot be empty!"));
     } if (!isset($email) || strlen($email) <= 0) {
-        array_push($errors, array("email" => "Email cannot be empty!"));
+        array_push($errors, array("Email cannot be empty!"));
     } if (!isset($password) || strlen($password) <= 0) {
-        array_push($errors, array("password" => "Password cannot be empty!"));
+        array_push($errors, array("Password cannot be empty!"));
     } if (!isset($password_verification) || strlen($password_verification) <= 0) {
-        array_push($errors, array("password_verification" => "Password verification cannot be empty!"));
+        array_push($errors, array("Password verification cannot be empty!"));
     } if (isset($password) && isset($password_verification) && strlen($password) <= 0 && strlen($password_verification) <= 0 && $password != $password_verification) {
-        array_push($errors, array("passwords_match" => "Passwords does not match!"));
+        array_push($errors, array("Passwords does not match!"));
     }
 
     if (count($errors) <= 0) {

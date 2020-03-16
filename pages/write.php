@@ -15,18 +15,18 @@ if (isset($_POST["article_submit"])) {
     $title = $_POST["article_title"];
     $content = $_POST["article_content"];
     if (!isset($title) || strlen($title) <= 0) {
-        array_push($errors, array("title" => "Title cannot be empty!"));
+        array_push($errors, array("Title cannot be empty!"));
     } if (!isset($content) || strlen($content) <= 0) {
-        array_push($errors, array("content" => "Content cannot be empty!"));
+        array_push($errors, array("Content cannot be empty!"));
     } if ($_FILES["input_cover"]["error"] == UPLOAD_ERR_NO_FILE) {
-        array_push($errors, array("cover" => "Cover file cannot be empty!"));
+        array_push($errors, array("Cover file cannot be empty!"));
     } else {
         $allowed = array("png", "jpg", "jpeg");
         $destination = __ROOT__ . "/assets/images/covers/";
         $extension = strtolower(pathinfo($_FILES['input_cover']['name'], PATHINFO_EXTENSION));
 
         if (!in_array($extension, $allowed)) {
-            array_push($errors, array("cover" => "Cover file extension not in " . implode( ", ", $allowed ) . "!"));
+            array_push($errors, array("Cover file extension not in " . implode( ", ", $allowed ) . "!"));
         } else {
             $filename = uniqid() . "." . $extension;
         }
@@ -35,9 +35,9 @@ if (isset($_POST["article_submit"])) {
     if (count($errors) <= 0) {
         if (move_uploaded_file($_FILES['input_cover']['tmp_name'],  $destination . $filename)) {
             ArticleService::add($title, $content, $user->getId(), $filename);
-            array_push($success, array("article" => "Article successfully added!"));
+            array_push($success, array("Article successfully added!"));
         } else {
-            array_push($errors, array("cover" => "Cover file cannot be uploaded!"));
+            array_push($errors, array("Cover file cannot be uploaded!"));
         }
     }
 }

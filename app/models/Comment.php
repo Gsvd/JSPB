@@ -1,7 +1,7 @@
 <?php
 
 
-class Comment
+class Comment implements JsonSerializable
 {
 
     private $id;
@@ -25,6 +25,11 @@ class Comment
         $this->content = $content;
         $this->created = $created;
         $this->article = $article;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 
     /**

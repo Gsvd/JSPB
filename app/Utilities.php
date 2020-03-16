@@ -15,4 +15,13 @@ class Utilities extends Database
         return end($urlArray);
     }
 
+    public static function requiredParameters($request, $parameters) {
+        foreach ($parameters as $parameter) {
+            if (!isset($request[$parameter])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

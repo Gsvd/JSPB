@@ -1,7 +1,7 @@
 <?php
 
 
-class Article
+class Article implements JsonSerializable
 {
 
     private $id;
@@ -28,6 +28,11 @@ class Article
         $this->author = $author;
         $this->created = $created;
         $this->cover = $cover;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 
     /**
@@ -128,6 +133,10 @@ class Article
 
     public function getComments() {
         return CommentService::getByArticle($this);
+    }
+
+    public function isNull() {
+        return $this->getId() == null;
     }
 
 }

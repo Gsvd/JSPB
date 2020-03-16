@@ -11,14 +11,14 @@ if (isset($_POST["login_submit"])) {
     $password = $_POST["password"];
 
     if (!isset($email) || strlen($email) <= 0) {
-        array_push($errors, array("email" => "Email cannot be empty!"));
+        array_push($errors, array("Email cannot be empty!"));
     } if (!isset($password) || strlen($password) <= 0) {
-        array_push($errors, array("password" => "Password cannot be empty!"));
+        array_push($errors, array("Password cannot be empty!"));
     }
 
     if (count($errors) <= 0) {
         if (!SecurityService::login($email, $password)) {
-            array_push($errors, array("no_account" => "User or password incorrect!"));
+            array_push($errors, array("User or password incorrect!"));
         } else {
             header('Location: /');
         }

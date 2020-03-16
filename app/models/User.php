@@ -1,7 +1,7 @@
 <?php
 
 
-class User
+class User implements JsonSerializable
 {
 
     private $id;
@@ -28,6 +28,11 @@ class User
         $this->email = $email;
         $this->created = $created;
         $this->rank = $rank;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 
     /**

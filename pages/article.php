@@ -14,12 +14,12 @@ if (isset($_POST["comment_submit"])) {
     $comment = $_POST["comment_area"];
 
     if (!isset($comment) || strlen($comment) <= 0) {
-        array_push($errors, array("comment" => "Comment cannot be empty!"));
+        array_push($errors, array("Comment cannot be empty!"));
     }
 
     if (count($errors) <= 0) {
         CommentService::add($comment, $user->getId(), $article->getId());
-        array_push($success, array("comment" => "Comment successfully added!"));
+        array_push($success, array("Comment successfully added!"));
     }
 } else if (isset($_POST["comment_delete"])) {
     $commentID = $_POST["comment_id"];
@@ -53,7 +53,7 @@ $comments = $article->getComments();
                 </div>
                 <div class="row">
                     <div class="twelve columns title">
-                        <h2>
+                        <h2 id="title">
                             <?= $article->getTitle() ?>
                         </h2>
                     </div>
@@ -79,36 +79,21 @@ $comments = $article->getComments();
                     </div>
                 </div>
                 <div class="row">
-                    <form action="" method="post">
+                    <form id="comment_form" action="" method="post">
+                        <input name="article_id" type="hidden" value="<?= $article->getId() ?>">
                         <div class="eight columns offset-by-two">
                             <textarea class="u-full-width" name="comment_area" id="comment_area" cols="30" rows="10"
                                       placeholder="Arrays start at one."></textarea>
                         </div>
                         <div class="eight columns offset-by-two">
-                            <input class="u-full-width" type="submit" name="comment_submit" value="Submit">
+                            <input id="comment_submit" class="u-full-width" type="button" name="comment_submit" value="Submit">
                         </div>
                     </form>
                 </div>
                 <div class="twelve columns">
                     <ul>
-                        <div>
-                            <?php
-                            foreach ($errors as $error) {
-                                ?>
-                                <li class="error"><?= array_values($error)[0] ?></li>
-                                <?php
-                            }
-                            ?>
-                        </div>
-                        <div>
-                            <?php
-                            foreach ($success as $message) {
-                                ?>
-                                <li class="success"><?= array_values($message)[0] ?></li>
-                                <?php
-                            }
-                            ?>
-                        </div>
+                        <div id="errors"></div>
+                        <div id="success"></div>
                     </ul>
                 </div>
                 <div class="row">
@@ -144,4 +129,29 @@ $comments = $article->getComments();
         <?php
     }
     ?>
+    <script>
+        document.getElementById("comment_submit").addEventListener("click", function () {
+            var form = new FormData(document.getElementById("comment_form"));
+            fetch("/api/comments/add.php", {
+                method: "POST",
+                body: form
+            })
+            .then(function (response) {
+                return response.text()
+            })
+            .then(function (text) {
+                let response = JSON.parse(text);
+                let success = "";
+                let errors = "";
+                response.success.forEach(function (element) {
+                   success += `<li class='success'>${element}</li>`
+                });
+                response.errors.forEach(function (element) {
+                    errors += `<li class='error'>${element}</li>`
+                });
+                document.getElementById("success").innerHTML = success;
+                document.getElementById("errors").innerHTML = errors;
+            })
+        })
+    </script>
 </div>

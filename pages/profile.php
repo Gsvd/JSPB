@@ -15,32 +15,32 @@ if (isset($_POST["profile_submit"])) {
     $username = $_POST["username"];
 
     if (!isset($username) || strlen($username) <= 0) {
-        array_push($errors_0, array("username" => "Username cannot be empty!"));
+        array_push($errors_0, array("Username cannot be empty!"));
     } elseif ($username == $user->getUsername()) {
-        array_push($errors_0, array("username" => "Username cannot be the same!"));
+        array_push($errors_0, array("Username cannot be the same!"));
     }
 
     if (count($errors_0) <= 0) {
         $user->setUsername($username);
         UserService::update($user);
-        array_push($success_0, array("username" => "Username successfully updated!"));
+        array_push($success_0, array("Username successfully updated!"));
     }
 } elseif (isset($_POST["password_submit"])) {
     $password = $_POST["password"];
     $password_verification = $_POST["password_verification"];
 
     if (!isset($password) || strlen($password) <= 0) {
-        array_push($errors_1, array("password" => "Password cannot be empty!"));
+        array_push($errors_1, array("Password cannot be empty!"));
     } if (!isset($password_verification) || strlen($password_verification) <= 0) {
-        array_push($errors_1, array("password_verification" => "Password verification cannot be empty!"));
+        array_push($errors_1, array("Password verification cannot be empty!"));
     } if ($password != $password_verification) {
-        array_push($errors_1, array("passwords_match" => "Passwords does not match!"));
+        array_push($errors_1, array("Passwords does not match!"));
     }
 
     if (count($errors_1) <= 0) {
         $user->setPassword($password);
         UserService::update($user);
-        array_push($success_1, array("password" => "Password successfully updated!"));
+        array_push($success_1, array("Password successfully updated!"));
     }
 } elseif (isset($_POST["update_submit"])) {
     $userID = $_POST["user_id"];

@@ -1,7 +1,7 @@
 <?php
 
 
-class Rank
+class Rank implements JsonSerializable
 {
 
     private $id;
@@ -19,6 +19,11 @@ class Rank
         $this->id = $id;
         $this->label = $label;
         $this->code = $code;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 
     /**
