@@ -96,34 +96,7 @@ $comments = $article->getComments();
                         <div id="success"></div>
                     </ul>
                 </div>
-                <div class="row">
-                    <?php
-                    foreach ($comments as $comment) {
-                        ?>
-                        <div class="twelve columns comment">
-                            <div class="ten columns">
-                                <?= $comment->getContent() ?>
-                            </div>
-                            <?php
-                            if ($comment->getAuthor() == $user->getId() || SecurityService::requiredRank(RanksEnum::ADMIN)) {
-                                ?>
-                                <div class="two columns">
-                                    <form action="" method="post">
-                                        <input name="comment_id" type="hidden" value="<?= $comment->getId() ?>">
-                                        <input name="comment_delete" class="u-full-width" type="submit" value="Delete">
-                                    </form>
-                                </div>
-                                <?php
-                            }
-                            ?>
-                            <div class="twelve columns author space-top text-right">
-                                by <?= $comment->getAuthor()->getUsername() ?>, <?= $comment->getCreated() ?>
-                            </div>
-                        </div>
-                        <?php
-                    }
-                    ?>
-                </div>
+                <div id="comments" class="row"></div>
             </div>
         </div>
         <?php
@@ -151,7 +124,34 @@ $comments = $article->getComments();
                 });
                 document.getElementById("success").innerHTML = success;
                 document.getElementById("errors").innerHTML = errors;
+                getComments();
             })
-        })
+        });
+
+        function getComments() {
+            fetch("/api/comments/get.php?article=<?= $article->getId() ?>")
+            .then(function (response) {
+                return response.text()
+            })
+            .then(function (text) {
+                let response = JSON.parse(text);
+                let comments = "";
+                response.body.forEach(function (element) {
+                    comments += "<div class='twelve columns comment'>" +
+                        "<div class='ten columns'>" +
+                            element.content +
+                        "</div>" +
+                        "<div class='twelve columns author space-top text-right'>" +
+                            `by ${element.author.username}, ${element.created}` +
+                        "</div>" +
+                    "</div>";
+                    document.getElementById("comments").innerHTML = comments
+                })
+            })
+        }
+
+        window.addEventListener("DOMContentLoaded", () => {
+            getComments();
+        });
     </script>
 </div>

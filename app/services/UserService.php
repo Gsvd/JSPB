@@ -39,7 +39,6 @@ class UserService
         SELECT u.id,
                u.email,
                u.username,
-               u.password,
                u.created,
                r.id AS 'rank',
                r.label,
@@ -53,7 +52,7 @@ class UserService
             ':id' => $id
         ));
         $row = $sth->fetch();
-        $user = new User($row['id'], $row['username'], $row['password'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
+        $user = new User($row['id'], $row['username'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
         return $user;
     }
 
@@ -120,7 +119,7 @@ class UserService
         $rows = $sth->fetchAll();
         $users = array();
         foreach ($rows as $row) {
-            $user = new User($row['id'], $row['username'], $row['password'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
+            $user = new User($row['id'], $row['username'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
             array_push($users, $user);
         }
         return $users;

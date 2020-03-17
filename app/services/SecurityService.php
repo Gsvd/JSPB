@@ -25,7 +25,7 @@ class SecurityService
             ':id' => $id
         ));
         $row = $sth->fetch();
-        $user = new User($row['id'], $row['username'], $row['password'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
+        $user = new User($row['id'], $row['username'], $row['email'], $row['created'], new Rank($row['rank'], $row['label'], $row['code']));
         return $user;
     }
 

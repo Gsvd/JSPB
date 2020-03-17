@@ -6,7 +6,6 @@ class User implements JsonSerializable
 
     private $id;
     private $username;
-    private $password;
     private $email;
     private $created;
     private $rank;
@@ -15,16 +14,14 @@ class User implements JsonSerializable
      * User constructor.
      * @param $id
      * @param $username
-     * @param $password
      * @param $email
      * @param $created
      * @param $rank
      */
-    public function __construct($id, $username, $password, $email, $created, $rank)
+    public function __construct($id, $username, $email, $created, $rank)
     {
         $this->id = $id;
         $this->username = $username;
-        $this->password = $password;
         $this->email = $email;
         $this->created = $created;
         $this->rank = $rank;
