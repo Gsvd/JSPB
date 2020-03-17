@@ -1,7 +1,5 @@
 <?php
 
-session_start();
-
 //ENTITIES
 require_once($_SERVER['DOCUMENT_ROOT'] . "/api/entities/Response.php");
 

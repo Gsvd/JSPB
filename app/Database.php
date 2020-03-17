@@ -10,9 +10,9 @@ class Database
 
     public function __construct()
     {
-        $this->user = "root";
-        $this->password = "root";
-        $this->dsn = "mysql:dbname=JSPB;host=127.0.0.1;charset=UTF8";
+        $this->user = "Velkow";
+        $this->password = "phBsMZbq6aBfyHDuHqb8tY4VEB4xjXXh";
+        $this->dsn = "mysql:dbname=jspb;host=dbinstance.cwbjsngo15qh.eu-west-3.rds.amazonaws.com;charset=UTF8";
     }
 
     public function connect() {
